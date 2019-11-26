@@ -1,0 +1,52 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %}
+    {% if  not category %}
+        我的商城
+    {% else %}
+        {{ category.name }}
+    {% endif %}
+{% endblock %}
+{% block  content %}
+    <div id="sidebar">
+        <h2>分类</h2>
+        <ul>
+            <li
+                    {% if not category %}
+                        class="selected"
+                    {% endif %}>
+            <a href="{% url 'shop:product_list' %}">
+                        全部
+            </a>
+            </li>
+        {% for cate in categories %}
+           <li>
+               <a href="{{ cate.get_absolute_url }}"
+                    {% if category.name == cate.name %}
+                        class="selected"
+                    {% endif %}>
+                 {{ cate.name }}
+               </a>
+           </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div id="main" class="product-list">
+        <h2>产品</h2>
+        {% for product in products%}
+            <div id="item">
+                <a href="{{ product.get_absolute_url }}">
+                <img src="{% if  product.image %}
+                            {{  product.image.url }}
+                         {% else %}
+                            {% static  'shop/img/no_image.png' %}
+                         {% endif %}">
+                </a>
+                <a href="{{ product.get_absolute_url }}">
+                    {{ product.name }}
+                </a>
+                {{ product.price }}元/斤
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
